@@ -9,14 +9,14 @@ class Menu extends Phaser.Scene {
         this.load.audio('sfx_explosion','./assets/explosion38.wav');
         this.load.audio('sfx_rocket', './assets/rocket_shot.wav');
 
-
+        this.load.image('crabmenu', './assets/crabmenu.png');
       }
 
 
       
 create() {
   
-
+    this.crabmenu = this.add.tileSprite(0, 0, 640, 480, 'crabmenu').setOrigin(0,0);
     let menuConfig = {
         fontFamily: 'Courier',
         fontSize: '28px',
