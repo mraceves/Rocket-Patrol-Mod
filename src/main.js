@@ -1,3 +1,8 @@
+// Name: Mathew Aceves
+// Project Title: Ocean Patrol(Rocket Patrol Mod)
+// Date: 4/22/2021
+// took like a Day+ to complete
+
 let config = {
   type: Phaser.AUTO,
   width: 640,
@@ -11,8 +16,6 @@ let borderPadding = borderUISize / 3;
 
 // reserve keyboard vars
 let keyF, keyR, keyLEFT, keyRIGHT;
-
-
 
 
 //    SCORE BREAK DOWN
