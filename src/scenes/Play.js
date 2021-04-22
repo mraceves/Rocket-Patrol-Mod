@@ -72,6 +72,39 @@ this.p1Score = 0;
   }
   this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding*2, this.p1Score, scoreConfig);
 
+
+// create a game clock that will countdown until game over
+this.gameClock = game.settings.gameTimer;
+// create an object to populate the text configuration members
+let gameClockConfig =
+{
+    fontFamily: "Courier",
+    fontSize: "20px",
+    backgroundColor: "#f3b141",
+    color: "#843605",
+    align: "left",
+    padding: {top: 5, bottom: 5},
+    fixedWidth: 140
+};
+
+ // add the timer text
+ this.timeLeft = this.add.text
+ (400, 54, "Timer: " + this.formatTime(this.gameClock), gameClockConfig );
+
+ this.timedEvent = this.time.addEvent( 
+              {
+                delay: 1000,
+                callback: () =>
+                {
+                    this.gameClock -= 1000; 
+                    this.timeLeft.text = "Timer: " +
+                        this.formatTime(this.gameClock);
+                },
+                scope: this,
+                loop: true
+            }
+        );
+
   // GAME OVER flag
 this.gameOver = false;
   // 60-second play clock
@@ -143,4 +176,14 @@ if(this.checkCollision(this.p1Rocket, this.ship03)) {
   this.scoreLeft.text = this.p1Score;  
   this.sound.play('sfx_explosion');
   }
+
+
+formatTime(ms)
+{
+    let s = ms/1000;
+    let min = Math.floor(s/60);
+    let sec = s%60;
+    sec = sec.toString().padStart(2, "0");
+    return `${min}:${sec}`;
+}
 }
