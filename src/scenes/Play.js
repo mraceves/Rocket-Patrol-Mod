@@ -7,19 +7,34 @@ class Play extends Phaser.Scene {
         this.load.image('rocket', './assets/rocket.png');
         this.load.image('spaceship', './assets/spaceship.png');
         this.load.image('starfield', './assets/starfield.png');
+        this.load.image('rarefish', './assets/rarefish.png');
+
+        // load music
+        // music from https://opengameart.org/content/ocean-theme 
+        this.load.audio('music', './assets/music.ogg');
         // load spritesheet
 this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
       }
 create() {
+  if (!this.music){
+    this.music = this.sound.add('music', {
+      loop: true
+  })
+  /* Play music. */
+  this.music.play()
+  }
+
     // place tile sprite
 this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0, 0);
-    // green UI background
-this.add.rectangle(0, borderUISize + borderPadding, game.config.width, borderUISize * 2, 0x00FF00).setOrigin(0, 0);
-// white borders
-this.add.rectangle(0, 0, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0, 0);
-this.add.rectangle(0, game.config.height - borderUISize, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0, 0);
-this.add.rectangle(0, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0, 0);
-this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0, 0);
+    // teal UI background
+this.add.rectangle(0, borderUISize + borderPadding, game.config.width, borderUISize * 2, 0x00C48A).setOrigin(0, 0);
+
+// blues/sand borders
+this.add.rectangle(0, 0, borderUISize, game.config.height, 0x232dae).setOrigin(0, 0);
+this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0x232dae).setOrigin(0, 0);
+this.add.rectangle(0, 0, game.config.width, borderUISize, 0xadfffc).setOrigin(0, 0); // top
+this.add.rectangle(0, game.config.height - borderUISize -6 , game.config.width, borderUISize +6, 0xfbe499).setOrigin(0, 0); // bottom
+
 // add rocket (p1)
 this.p1Rocket = new Rocket(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'rocket').setOrigin(0.5, 0);
   // define keys
@@ -28,9 +43,11 @@ this.p1Rocket = new Rocket(this, game.config.width/2, game.config.height - borde
   keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
   keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 // add spaceships (x3)
-    this.ship01 = new Spaceship(this, game.config.width + borderUISize*6, borderUISize*4, 'spaceship', 0, 30).setOrigin(0, 0);
+    this.ship01 = new Spaceship(this, game.config.width + borderUISize*6, borderUISize*4, 'rarefish', 0, 30).setOrigin(0, 0);
     this.ship02 = new Spaceship(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2, 'spaceship', 0, 20).setOrigin(0,0);
     this.ship03 = new Spaceship(this, game.config.width, borderUISize*6 + borderPadding*4, 'spaceship', 0, 10).setOrigin(0,0);
+
+    this.ship01.moveSpeed = 5;
 
     // animation config
 this.anims.create({
@@ -66,6 +83,11 @@ this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
   }, null, this);
   }
   update() {
+
+  // check key input for restart
+  if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
+    this.scene.restart();
+}
 
     if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
       this.scene.start("menuScene");
