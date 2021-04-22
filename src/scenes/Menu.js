@@ -5,9 +5,9 @@ class Menu extends Phaser.Scene {
 
     preload() {
         // load audio
-        this.load.audio('sfx_select', './assets/blip_select12.wav');
-        this.load.audio('sfx_explosion','./assets/explosion38.wav');
-        this.load.audio('sfx_rocket', './assets/rocket_shot.wav');
+        this.load.audio('bubbleSelect', './assets/bubbleSelect.wav');
+        this.load.audio('splashSound','./assets/splashSound.wav');
+        this.load.audio('crabJump', './assets/crabJump.wav');
 
         this.load.image('crabmenu', './assets/crabmenu.png');
       }
@@ -32,8 +32,8 @@ create() {
 
 
       // show menu text
-      this.add.text(game.config.width/2, game.config.height/2 - borderUISize - borderPadding, 'ROCKET PATROL', menuConfig).setOrigin(0.5);
-      this.add.text(game.config.width/2, game.config.height/2, 'Use ←→ arrows to move & (F) to fire', menuConfig).setOrigin(0.5);
+      this.add.text(game.config.width/2, game.config.height/2 - borderUISize - borderPadding, 'OCEAN PATROL', menuConfig).setOrigin(0.5);
+      this.add.text(game.config.width/2, game.config.height/2, 'Use ←→ arrows to move & (F) to jump', menuConfig).setOrigin(0.5);
       menuConfig.backgroundColor = '#00FF00';
       menuConfig.color = '#000';
       this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding, 'Press ← for Novice or → for Expert', menuConfig).setOrigin(0.5);
@@ -50,7 +50,7 @@ create() {
         spaceshipSpeed: 3,
         gameTimer: 60000    
       }
-      this.sound.play('sfx_select');
+      this.sound.play('bubbleSelect');
       this.scene.start('playScene');    
     }
     if (Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
@@ -59,7 +59,7 @@ create() {
         spaceshipSpeed: 4,
         gameTimer: 45000    
       }
-      this.sound.play('sfx_select');
+      this.sound.play('bubbleSelect');
       this.scene.start('playScene');    
     }
   }

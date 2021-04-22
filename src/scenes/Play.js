@@ -4,16 +4,16 @@ class Play extends Phaser.Scene {
     }
     preload() {
         // load images/tile sprites
-        this.load.image('rocket', './assets/rocket.png');
-        this.load.image('spaceship', './assets/spaceship.png');
-        this.load.image('starfield', './assets/starfield.png');
+        this.load.image('crab', './assets/crab.png');
+        this.load.image('fish', './assets/fish.png');
+        this.load.image('ocean', './assets/ocean.png');
         this.load.image('rarefish', './assets/rarefish.png');
 
         // load music
         // music from https://opengameart.org/content/ocean-theme 
         this.load.audio('music', './assets/music.ogg');
         // load spritesheet
-this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
+this.load.spritesheet('splash', './assets/splash.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
       }
 create() {
   if (!this.music){
@@ -25,7 +25,7 @@ create() {
   }
 
     // place tile sprite
-this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0, 0);
+this.starfield = this.add.tileSprite(0, 0, 640, 480, 'ocean').setOrigin(0, 0);
     // teal UI background
 this.add.rectangle(0, borderUISize + borderPadding, game.config.width, borderUISize * 2, 0x00C48A).setOrigin(0, 0);
 
@@ -36,7 +36,7 @@ this.add.rectangle(0, 0, game.config.width, borderUISize, 0xadfffc).setOrigin(0,
 this.add.rectangle(0, game.config.height - borderUISize -6 , game.config.width, borderUISize +6, 0xfbe499).setOrigin(0, 0); // bottom
 
 // add rocket (p1)
-this.p1Rocket = new Rocket(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'rocket').setOrigin(0.5, 0);
+this.p1Rocket = new Rocket(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'crab').setOrigin(0.5, 0);
   // define keys
   keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
   keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
@@ -44,15 +44,15 @@ this.p1Rocket = new Rocket(this, game.config.width/2, game.config.height - borde
   keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 // add spaceships (x3)
     this.ship01 = new Spaceship(this, game.config.width + borderUISize*6, borderUISize*4, 'rarefish', 0, 30).setOrigin(0, 0);
-    this.ship02 = new Spaceship(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2, 'spaceship', 0, 20).setOrigin(0,0);
-    this.ship03 = new Spaceship(this, game.config.width, borderUISize*6 + borderPadding*4, 'spaceship', 0, 10).setOrigin(0,0);
+    this.ship02 = new Spaceship(this, game.config.width + borderUISize*3, borderUISize*5 + borderPadding*2, 'fish', 0, 20).setOrigin(0,0);
+    this.ship03 = new Spaceship(this, game.config.width, borderUISize*6 + borderPadding*4, 'fish', 0, 10).setOrigin(0,0);
 
     this.ship01.moveSpeed = 5;
 
     // animation config
 this.anims.create({
-    key: 'explode',
-    frames: this.anims.generateFrameNumbers('explosion', { start: 0, end: 9, first: 0}),
+    key: 'splash',
+    frames: this.anims.generateFrameNumbers('splash', { start: 0, end: 9, first: 0}),
     frameRate: 30
 });
 // initialize score
@@ -163,8 +163,8 @@ if(this.checkCollision(this.p1Rocket, this.ship03)) {
     // temporarily hide ship
     ship.alpha = 0;
     // create explosion sprite at ship's position
-    let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0, 0);
-    boom.anims.play('explode');             // play explode animation
+    let boom = this.add.sprite(ship.x, ship.y, 'splash').setOrigin(0, 0);
+    boom.anims.play('splash');             // play explode animation
     boom.on('animationcomplete', () => {    // callback after anim completes
       ship.reset();                         // reset ship position
       ship.alpha = 1;                       // make ship visible again
@@ -174,7 +174,7 @@ if(this.checkCollision(this.p1Rocket, this.ship03)) {
       // score add and repaint
   this.p1Score += ship.points;
   this.scoreLeft.text = this.p1Score;  
-  this.sound.play('sfx_explosion');
+  this.sound.play('splashSound');
   }
 
 
